@@ -10,6 +10,7 @@ import dsw.tallerbackend.reporistory.PersonaRepository;
 import dsw.tallerbackend.reporistory.RolRepository;
 import dsw.tallerbackend.reporistory.UsuarioRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,38 @@ public class UsuarioService {
         
         
     }
+    public UsuarioResponse updateUsuario(UsuarioRequest usuarioRequest){
+        Integer idRol = usuarioRequest.getIdRol();
+        Rol rol = rolRepository.findById(idRol).get();
+        if(rol==null) return new UsuarioResponse();
+        
+        Integer idPersona=usuarioRequest.getIdPersona();
+        Persona persona=PersonaRepository.findById(idPersona).get();
+        if(persona==null) return new UsuarioResponse();
+        
+        Usuario usuario = new Usuario(
+                usuarioRequest.getIdUsuario(),
+                usuarioRequest.getNombreUsuario(),
+                usuarioRequest.getPassword(),
+                rol,
+                persona
+                 
+        );
+        usuario=usuarioRepository.save(usuario);
+        return UsuarioResponse.fromEntity(usuario);
+        
+    }
+    public void deleteUsuario(Long id){
+        usuarioRepository.deleteById(id);
+        
+    }
+    public UsuarioResponse findUsuario(Long id){
+        Optional<Usuario> result=usuarioRepository.findById(id);
+        if(!result.isPresent())
+            return null;
+        return UsuarioResponse.fromEntity(result.get());
+        
+        
+    }    
     
 }

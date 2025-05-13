@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TipoDocumentoService {
     TipoDocumentoRepository TipoDocumentoRepository;
-    public List<TipoDocumento> getipoDocumentos(){
+    public List<TipoDocumento> getTipoDocumentos(){
         return TipoDocumentoRepository.findAll();
     }
     

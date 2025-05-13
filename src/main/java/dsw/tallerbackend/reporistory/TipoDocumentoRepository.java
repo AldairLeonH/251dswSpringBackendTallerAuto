@@ -1,4 +1,3 @@
-
 package dsw.tallerbackend.reporistory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +8,7 @@ import java.util.Optional;
 @Repository
 public interface TipoDocumentoRepository  extends JpaRepository<TipoDocumento, Integer>{
     
-    Optional<TipoDocumento> findByTipoDoc(String tipoDocumento);
+    Optional<TipoDocumento> findByTipoDoc(String tipoDocumento); //nombre-cliente
+    
     
 }

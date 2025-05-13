@@ -75,9 +75,7 @@
 		</dependency>
                 
                 
-                
-                
-                <!-- for jwt -->
+                <!-- for jwtutil -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>

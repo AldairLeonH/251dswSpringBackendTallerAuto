@@ -43,6 +43,7 @@ public class Persona {
     private String nombres;
     
     private String direccion;
+    
     private String sexo;
     private String telefono;
     

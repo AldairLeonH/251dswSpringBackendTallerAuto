@@ -15,6 +15,7 @@ public class UsuarioRequest {
     private String nombreUsuario;
     private String password;
     private Integer idRol;
+    
     private Integer idPersona;    
     
 }

@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data // permite realizar codigo limpio
 @Entity//permite realizat las operaciones CRUD
 @Builder

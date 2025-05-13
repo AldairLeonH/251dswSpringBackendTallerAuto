@@ -17,6 +17,7 @@ public class RegisterRequestDTO {
     // we use LocalDate instead of Date because Date is deprecated in Java 8
     private String sexo;
     private String nroDocumento;
+    
     private String tipoDocumento;
     private String telefono;
     private String nombreUsuario;

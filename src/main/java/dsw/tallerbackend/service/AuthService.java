@@ -32,6 +32,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtService = null;
     
+    
     public AuthResponseDTO register(RegisterRequestDTO request) {
         // checking...
         if (usuarioRepository.existsByNombreUsuario(request.getNombreUsuario())) {

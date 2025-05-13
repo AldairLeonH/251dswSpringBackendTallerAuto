@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class UsuarioResponse {
     private Long idUsuario;
     private String nombreUsuario;
+    
     private String password;
     private Rol rol;
     private Persona Persona;

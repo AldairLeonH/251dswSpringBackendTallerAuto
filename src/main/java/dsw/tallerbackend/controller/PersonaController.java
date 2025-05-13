@@ -1,10 +1,7 @@
 
 package dsw.tallerbackend.controller;
 
-/**
- *
- * @author NICOL
- */
-class PersonaController {
+
+public class PersonaController {
     
 }

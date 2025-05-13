@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RolRepository extends JpaRepository<Rol,Integer > {
     
-        Optional<Rol> findByNombre(String tipoDocumento);
+        Optional<Rol> findByRol(String tipoDocumento);
 
 }

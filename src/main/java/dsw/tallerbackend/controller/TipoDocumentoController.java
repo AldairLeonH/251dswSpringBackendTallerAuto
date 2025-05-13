@@ -23,7 +23,7 @@ public class TipoDocumentoController {
     
     @GetMapping
     public ResponseEntity<?> getTipoDocumentos(){
-        List<TipoDocumento> listaTipoDocumento=null;
+        List<TipoDocumento> listaTipoDocumento;
         try{
             listaTipoDocumento=tipoDocumentoService.getTipoDocumentos();
         

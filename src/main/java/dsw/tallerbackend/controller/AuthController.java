@@ -4,6 +4,8 @@ import dsw.tallerbackend.dto.AuthResponseDTO;
 import dsw.tallerbackend.dto.LoginRequestDTO;
 import dsw.tallerbackend.dto.RegisterRequestDTO;
 import dsw.tallerbackend.service.AuthService;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,19 +39,39 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
-
+    
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Map<String, String>> handleException(Exception e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Error: " + e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    /*@ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e) {
+    return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+    return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }*/
 }

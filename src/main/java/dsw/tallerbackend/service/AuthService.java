@@ -30,7 +30,7 @@ public class AuthService {
     private final TipoDocumentoRepository tipoDocumentoRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtService = null;
+    private final JwtUtil jwtService;
     
     
     public AuthResponseDTO register(RegisterRequestDTO request) {
@@ -38,11 +38,11 @@ public class AuthService {
         if (usuarioRepository.existsByNombreUsuario(request.getNombreUsuario())) {
             throw new IllegalArgumentException("Hay un usuario registrado con ese email");
         }
-        if (personaRepository.existsByNumeroDocumento(request.getNroDocumento())) {
+        if (personaRepository.existsByNroDocumento(request.getNroDocumento())) {
             throw new IllegalArgumentException("Hay un usuario registrado con ese nro de documento");
         }
         //char sexo=request.getSexo().charAt(0);
-        TipoDocumento tipoDoc = tipoDocumentoRepository.findByNombre(request.getTipoDocumento())
+        TipoDocumento tipoDoc = tipoDocumentoRepository.findByTipoDoc(request.getTipoDocumento())
             .orElseThrow(() -> new RuntimeException("Tipo de documento no válido"));
 
         Persona persona = Persona.builder()
@@ -58,7 +58,7 @@ public class AuthService {
 
         personaRepository.save(persona);
 
-        Rol rol = rolRepository.findByNombre("Cliente") // O el que venga del DTO
+        Rol rol = rolRepository.findByRol("Cliente") // O el que venga del DTO
             .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
 
         Usuario usuario = Usuario.builder()

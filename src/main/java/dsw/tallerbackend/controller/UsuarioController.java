@@ -52,8 +52,9 @@ public class UsuarioController {
             logger.error("error inesperado",e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);     
         }        
-        if(usuarioResponse==null)
+        if(usuarioResponse==null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("usuario not insert").build());
+        }
         return ResponseEntity.ok(usuarioResponse);     
     }
     @PutMapping()

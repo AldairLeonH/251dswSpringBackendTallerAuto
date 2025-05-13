@@ -23,7 +23,7 @@ public class UsuarioResponse {
     private Persona Persona;
     public static UsuarioResponse fromEntity(Usuario usuario){
         return UsuarioResponse.builder()
-                .idUsuario(usuario.getIdUsuario())
+                .idUsuario(usuario.getId())
                 .nombreUsuario(usuario.getNombreUsuario())
                 .password(usuario.getPassword())
                 .rol(usuario.getRol())

@@ -2,11 +2,13 @@
 package dsw.tallerbackend.reporistory;
 
 import dsw.tallerbackend.model.Usuario;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-    
-    
+    boolean existsByNombreUsuario(String email);
+    Optional<Usuario> findByNombreUsuario(String nombreUsuario);
+
 }

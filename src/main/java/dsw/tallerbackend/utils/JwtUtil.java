@@ -16,6 +16,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+//Generar, firmar, validar y extraer información del JWT (JSON Web Token)
+
 @Service
 public class JwtUtil {
     @Value("5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437")

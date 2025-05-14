@@ -16,6 +16,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+        /*Interceptar cada solicitud HTTP, extraer el token del
+        header Authorization, validarlo y cargar el usuario
+        en el contexto de seguridad*/
 
 @Component
 @RequiredArgsConstructor

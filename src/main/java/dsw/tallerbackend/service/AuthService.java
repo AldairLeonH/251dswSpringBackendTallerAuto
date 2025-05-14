@@ -3,6 +3,7 @@ package dsw.tallerbackend.service;
 import dsw.tallerbackend.dto.AuthResponseDTO;
 import dsw.tallerbackend.dto.LoginRequestDTO;
 import dsw.tallerbackend.dto.RegisterRequestDTO;
+import dsw.tallerbackend.dto.UsuarioLoginDTO;
 import dsw.tallerbackend.model.Persona;
 import dsw.tallerbackend.model.Rol;
 import dsw.tallerbackend.model.TipoDocumento;
@@ -85,9 +86,21 @@ public class AuthService {
             throw new BadCredentialsException("Contrasena incorrecta");
         }
         
+        Persona persona = usuario.getPersona();
+        UsuarioLoginDTO dto = UsuarioLoginDTO.builder()
+            .id(usuario.getId())
+            .nombreUsuario(usuario.getNombreUsuario())
+            .nombreCompleto(persona.getNombres() + " " + persona.getApellidoPaterno())
+            .telefono(persona.getTelefono())
+            .nroDocumento(persona.getNroDocumento())
+            .tipoDocumento(persona.getTipoDocumento().getTipoDoc())
+            .rol(usuario.getRol().getRol())
+            .build();
+        
         String token = jwtService.generateToken(usuario);
         return AuthResponseDTO.builder()
             .token(token)
+            .usuario(dto)
             .build();
     }
 }

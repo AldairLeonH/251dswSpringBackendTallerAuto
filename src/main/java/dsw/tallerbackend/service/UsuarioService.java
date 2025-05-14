@@ -12,6 +12,7 @@ import dsw.tallerbackend.reporistory.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -23,12 +24,17 @@ public class UsuarioService {
     RolRepository rolRepository;
     @Autowired
     PersonaRepository PersonaRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder; 
+    
     public List<UsuarioResponse> listUsuarios(){
         return UsuarioResponse.fromEntities(usuarioRepository.findAll());
         
     }
     public UsuarioResponse insertUsuario(UsuarioRequest usuarioRequest){
         Integer idRol = usuarioRequest.getIdRol();
+        
+        
         Rol rol = rolRepository.findById(idRol).get();
         if(rol==null) return new UsuarioResponse();
         
@@ -36,10 +42,12 @@ public class UsuarioService {
         Persona persona=PersonaRepository.findById(idPersona).get();
         if(persona==null) return new UsuarioResponse();
         
+        String passwordEncriptada = passwordEncoder.encode(usuarioRequest.getPassword());
+        
         Usuario usuario = new Usuario(
                 usuarioRequest.getIdUsuario(),
                 usuarioRequest.getNombreUsuario(),
-                usuarioRequest.getPassword(),
+                passwordEncriptada,
                 rol,
                 persona
                  

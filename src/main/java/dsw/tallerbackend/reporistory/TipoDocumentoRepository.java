@@ -10,5 +10,4 @@ public interface TipoDocumentoRepository  extends JpaRepository<TipoDocumento, I
     
     Optional<TipoDocumento> findByTipoDoc(String tipoDocumento); //nombre-cliente
     
-    
 }

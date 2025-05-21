@@ -33,7 +33,7 @@ public class Modelo {
     private String nombre;
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_marca", referencedColumnName = "id_marca")
+    @JoinColumn(name = "marca_id", referencedColumnName = "id_marca")
     private Marca marca;
     
     

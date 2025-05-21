@@ -7,11 +7,13 @@ package dsw.tallerbackend.reporistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import dsw.tallerbackend.model.Auto;
+import java.util.List;
 
 
 
 @Repository
 public interface AutoRepository extends JpaRepository<Auto, Integer> {
-    
-    
+
+    public Auto findByPlaca(String placa);
+    List<Auto> findByPersona_IdPersona(Integer idPersona);
 }

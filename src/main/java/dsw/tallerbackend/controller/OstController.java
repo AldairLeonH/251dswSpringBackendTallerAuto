@@ -59,8 +59,9 @@ public class OstController {
             logger.error("error inesperado",e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);     
         }        
-        if(ostResponseDTO==null)
+        if(ostResponseDTO==null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("ost not insert").build());
+        }
         return ResponseEntity.ok(ostResponseDTO); 
         
     }

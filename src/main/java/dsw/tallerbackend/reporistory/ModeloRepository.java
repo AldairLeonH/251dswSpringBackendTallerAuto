@@ -6,6 +6,9 @@ package dsw.tallerbackend.reporistory;
 
 
 import dsw.tallerbackend.model.Modelo;
+import dsw.tallerbackend.model.TipoDocumento;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +18,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ModeloRepository  extends JpaRepository<Modelo, Integer>{
+    
+    Optional<Modelo> findByIdModelo(Integer IdModelo);
+    //public List<Modelo> findByMarcaId(Long marcaId);
     
 }

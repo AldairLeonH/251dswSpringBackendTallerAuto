@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dsw.tallerbackend.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +13,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OstRequestDTO {
-    private int idOst;
+public class OstRequestDTO{
+    private Integer idOst;
     private LocalDate fecha;
     private LocalTime hora;
     private String direccion;
-    private Integer idEstado;
-    private Integer IdAuto;
-    private Integer IdRecepcionista;
     
+    private Integer idAuto;
+    private Integer anio;
+    private String placa;
+    private Integer idModelo;
+    private Integer idPersona;
+    private String color;
+    
+    private Integer idEstado;
+    private Integer IdRecepcionista;
+    private List<Integer> preguntas;
 }

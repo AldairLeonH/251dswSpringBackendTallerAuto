@@ -21,6 +21,7 @@ import dsw.tallerbackend.reporistory.OstRepository;
 import dsw.tallerbackend.reporistory.PersonaRepository;
 import dsw.tallerbackend.reporistory.TipoEstadoRepository;
 import dsw.tallerbackend.reporistory.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,13 +115,13 @@ public class OstService {
         .build();
 
     ost = ostRepository.save(ost);
-            for (Integer idPregunta : ostRequestDTO.getPreguntas()) {
-                ordenPreguntaRepo.save(
-                    OrdenPregunta.builder()
-                        .id(new OrdenPreguntaPK(ost.getIdOst(), idPregunta))
-                        .build()
-                );
-            }
+        for (Integer idPregunta : ostRequestDTO.getPreguntas()) {
+            ordenPreguntaRepo.save(
+                OrdenPregunta.builder()
+                    .id(new OrdenPreguntaPK(ost.getIdOst(), idPregunta))
+                    .build()
+            );
+        }
         return OstResponseDTO.fromEntity(ost);
     }
     public OstResponseDTO updateOst(OstRequestDTO ostRequestDTO){
@@ -147,10 +148,16 @@ public class OstService {
         ost=ostRepository.save(ost);
         return OstResponseDTO.fromEntity(ost);
     }
+    @Transactional
     public void deleteOst(int id) {
         if (!ostRepository.existsById(id)) {
             throw new RuntimeException("Ost no encontrado");
         }
+        
+        // Eliminar las relaciones en orden_pregunta
+        ordenPreguntaRepo.deleteByIdIdOst(id);
+
+        // Luego eliminar la OST
         ostRepository.deleteById(id);
     }
     public OstResponseDTO findOst(Integer id){
@@ -158,8 +165,6 @@ public class OstService {
         if(!result.isPresent())
             return null;
         return OstResponseDTO.fromEntity(result.get());
-        
-        
     }
     
     

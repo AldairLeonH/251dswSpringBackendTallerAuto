@@ -24,7 +24,10 @@ import dsw.tallerbackend.reporistory.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -166,14 +169,15 @@ public class OstService {
             return null;
         return OstResponseDTO.fromEntity(result.get());
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    public List<OstResponseDTO> obtenerOstPorCliente(Integer idUsuario) {
+        Usuario usuario = (Usuario) usuarioRepository.findById(idUsuario);
+        Integer idPersona = usuario.getPersona().getIdPersona(); // asegúrate que no sea null
+        List<Ost> osts = ostRepository.findByIdPersonaCliente(idPersona);
+
+        return osts.stream()
+                   .map(OstResponseDTO::fromEntity)
+                   .collect(Collectors.toList());
+    }
     
 }

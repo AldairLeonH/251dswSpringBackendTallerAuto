@@ -82,18 +82,19 @@ public class BitacoraProblemasController {
     @DeleteMapping
     public ResponseEntity<?> eliminarBitacora(@RequestBody BitacoraProblemasRequestDTO request) {
         logger.info(">eliminarBitacora: " + request.toString());
+        BitacoraProblemasResponseDTO bitacoraResponse;
         try {
+            bitacoraResponse=bitacoraService.buscarBitacora(request.getIdProblema());
+            if(bitacoraResponse==null)
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("bitacora not found for delete").build());
             bitacoraService.eliminarBitacora(request.getIdProblema());
-        } catch (RuntimeException e) {
-            logger.warn("No se encontró la bitacora para eliminar", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ErrorResponse.builder().message(e.getMessage()).build());
-        } catch (Exception e) {
-            logger.error("Error al eliminar bitacora", e);
+            //bitacoraService.eliminarBitacora(request.getIdProblema());
+        }catch (Exception e) {
+            logger.error("error inesperado", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok("Bitacora eliminada correctamente");
+        return ResponseEntity.ok(bitacoraResponse);
     }
 
     @GetMapping("/find")

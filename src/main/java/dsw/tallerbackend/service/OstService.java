@@ -7,6 +7,7 @@ package dsw.tallerbackend.service;
 import dsw.tallerbackend.dto.OstRequestDTO;
 import dsw.tallerbackend.dto.OstResponseDTO;
 import dsw.tallerbackend.model.Auto;
+import dsw.tallerbackend.model.Direccion;
 import dsw.tallerbackend.model.Modelo;
 import dsw.tallerbackend.model.OrdenPregunta;
 import dsw.tallerbackend.model.OrdenPreguntaPK;
@@ -15,6 +16,7 @@ import dsw.tallerbackend.model.Persona;
 import dsw.tallerbackend.model.TipoEstado;
 import dsw.tallerbackend.model.Usuario;
 import dsw.tallerbackend.reporistory.AutoRepository;
+import dsw.tallerbackend.reporistory.DireccionRepository;
 import dsw.tallerbackend.reporistory.ModeloRepository;
 import dsw.tallerbackend.reporistory.OrdenPreguntaRepository;
 import dsw.tallerbackend.reporistory.OstRepository;
@@ -40,6 +42,8 @@ public class OstService {
     
     @Autowired private TipoEstadoRepository tipoEstadoRepository;
     
+    @Autowired private DireccionRepository direccionRepository;
+    
     @Autowired private PersonaRepository personaRepository;
     @Autowired
     private AutoRepository autoRepository;
@@ -60,7 +64,13 @@ public class OstService {
         return new OstResponseDTO(); // Estado inválido
     }
     TipoEstado tipoEstado = tipoEstadoOpt.get();
-
+    
+    Optional<Direccion> direccionOst = direccionRepository.findById(ostRequestDTO.getIdDireccion());
+    if (!direccionOst.isPresent()) {
+        return new OstResponseDTO(); // Direccion inválida
+    }
+    Direccion direccion = direccionOst.get();
+    
     Auto auto;
 
     // 2. Si se envía el ID del auto, buscarlo
@@ -111,7 +121,7 @@ public class OstService {
     Ost ost = Ost.builder()
         .fecha(ostRequestDTO.getFecha())
         .hora(ostRequestDTO.getHora())
-        .direccion(ostRequestDTO.getDireccion())
+        .direccion(direccion)
         .estado(tipoEstado)
         .auto(auto)
         .recepcionista(usuario)
@@ -131,7 +141,11 @@ public class OstService {
         Integer idTipoEstado = ostRequestDTO.getIdEstado();
         TipoEstado tipoEstado = tipoEstadoRepository.findById(idTipoEstado).get();
         if(tipoEstado==null) return new OstResponseDTO();
-
+        
+        Integer idDireccion = ostRequestDTO.getIdDireccion();
+        Direccion direccion = direccionRepository.findById(idDireccion).get();
+        if(direccion==null) return new OstResponseDTO();
+        
         Integer idAuto = ostRequestDTO.getIdAuto();
         Auto auto = autoRepository.findById(idAuto).get();
         if(auto==null) return new OstResponseDTO();
@@ -143,7 +157,7 @@ public class OstService {
                 ostRequestDTO.getIdOst(),
                 ostRequestDTO.getFecha(),
                 ostRequestDTO.getHora(),
-                ostRequestDTO.getDireccion(),
+                direccion,
                 tipoEstado,
                 auto,
                 usuario

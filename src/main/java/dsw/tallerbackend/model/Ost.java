@@ -36,8 +36,9 @@ public class Ost {
     private LocalTime hora;
     
     
-    
-    private String direccion;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_direccion", referencedColumnName = "id_direccion")
+    private Direccion direccion;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_estado", referencedColumnName = "id_estado")

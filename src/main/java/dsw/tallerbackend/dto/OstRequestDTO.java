@@ -17,7 +17,7 @@ public class OstRequestDTO{
     private Integer idOst;
     private LocalDate fecha;
     private LocalTime hora;
-    private String direccion;
+    private Integer idDireccion;
     
     private Integer idAuto;
     private Integer anio;

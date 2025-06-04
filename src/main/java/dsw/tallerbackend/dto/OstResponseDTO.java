@@ -59,7 +59,7 @@ public class OstResponseDTO {
             .idOst(ost.getIdOst())
             .fecha(ost.getFecha())
             .hora(ost.getHora())
-            .direccion(ost.getDireccion())
+            .direccion(ost.getDireccion().getDireccion())
             .estado(ost.getEstado() != null ? ost.getEstado().getEstado() : null)
 
             // Auto

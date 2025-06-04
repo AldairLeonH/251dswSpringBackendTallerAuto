@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import dsw.tallerbackend.utils.ErrorResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -106,5 +107,20 @@ public class UsuarioController {
         if(usuarioResponse==null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse.builder().message("usuario not found").build());
         return ResponseEntity.ok(usuarioResponse);      
-    }    
+    }
+    @GetMapping("findById/{id}")
+    public ResponseEntity<?> findUsuarioById(@PathVariable Long id) {
+        logger.info(">find id=" + id);
+        UsuarioResponse usuarioResponse;
+        try {
+            usuarioResponse = usuarioService.findUsuario(id);
+        } catch (Exception e) {
+            logger.error("error inesperado", e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (usuarioResponse == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ErrorResponse.builder().message("usuario not found").build());
+        return ResponseEntity.ok(usuarioResponse);
+    }
 }   

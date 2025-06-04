@@ -1,13 +1,20 @@
 
 package dsw.tallerbackend.dto;
 
+import dsw.tallerbackend.model.Auto;
 import dsw.tallerbackend.model.Modelo;
 import dsw.tallerbackend.model.Persona;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AutoResponse {
     private Integer idAuto;
     private String placa;
@@ -15,4 +22,20 @@ public class AutoResponse {
     private Integer anio;
     private String color;
     private Persona persona;
+    public static AutoResponse fromEntity(Auto auto){
+        return AutoResponse.builder()
+                .idAuto(auto.getIdAuto())
+                .placa(auto.getPlaca())
+                .modelo(auto.getModelo())
+                .anio(auto.getAnio())
+                .color(auto.getColor())
+                .persona(auto.getPersona())
+                .build();
+    }
+    public static List<AutoResponse> fromEntities(List<Auto> auto){
+       return auto.stream()
+               .map(AutoResponse::fromEntity)
+               .collect(Collectors.toList());    
+    }
+    
 }

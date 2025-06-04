@@ -27,7 +27,12 @@ import lombok.NoArgsConstructor;
 public class OstResponseDTO {
     private Integer idOst;
     private LocalDate fecha;
+    private LocalDate fechaRevision;
     private LocalTime hora;
+
+    private String nivelGasolina;
+    private Integer kilometraje;
+    
     private String direccion;
 
     private String estado;
@@ -50,15 +55,18 @@ public class OstResponseDTO {
 
     // Recepcionista
     private String recepcionista;
+    private String supervisor;
     
     public static OstResponseDTO fromEntity(Ost ost) {
         Auto auto = ost.getAuto();
         Persona persona = (auto != null) ? auto.getPersona() : null;
-
         return OstResponseDTO.builder()
             .idOst(ost.getIdOst())
             .fecha(ost.getFecha())
+            .fechaRevision(ost.getFechaRevision())
             .hora(ost.getHora())
+            .nivelGasolina(ost.getNivelGasolina())
+            .kilometraje(ost.getKilometraje())
             .direccion(ost.getDireccion().getDireccion())
             .estado(ost.getEstado() != null ? ost.getEstado().getEstado() : null)
 
@@ -85,6 +93,12 @@ public class OstResponseDTO {
                     ? ost.getRecepcionista().getPersona().getNombres()+" "+
                     ost.getRecepcionista().getPersona().getApellidoPaterno()+" "+
                         ost.getRecepcionista().getPersona().getApellidoMaterno(): null)
+                
+            // Recepcionista
+            .supervisor(ost.getSupervisor()!= null
+                    ? ost.getSupervisor().getPersona().getNombres()+" "+
+                    ost.getSupervisor().getPersona().getApellidoPaterno()+" "+
+                        ost.getSupervisor().getPersona().getApellidoMaterno(): null)
             .build();
     }
 

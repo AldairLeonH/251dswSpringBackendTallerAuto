@@ -4,6 +4,7 @@
  */
 package dsw.tallerbackend.controller;
 
+import dsw.tallerbackend.dto.InventarioRevisionDTO;
 import dsw.tallerbackend.dto.OstRequestDTO;
 import dsw.tallerbackend.dto.OstResponseDTO;
 import dsw.tallerbackend.service.OstService;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -97,5 +97,10 @@ public class OstController {
         ostService.deleteOst(id);
         return ResponseEntity.noContent().build();
     }
-    
+    @PutMapping("/actualizar-inventario/{idOst}")
+    public ResponseEntity<?> actualizarInventario(@PathVariable Integer idOst,
+            @RequestBody InventarioRevisionDTO dto) {
+        ostService.actualizarInventarioYRevision(idOst, dto);
+        return ResponseEntity.ok("Inventario y datos de revisión actualizados.");
+    }
 }

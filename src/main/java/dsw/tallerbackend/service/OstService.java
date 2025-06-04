@@ -4,10 +4,12 @@
  */
 package dsw.tallerbackend.service;
 
+import dsw.tallerbackend.dto.InventarioRevisionDTO;
 import dsw.tallerbackend.dto.OstRequestDTO;
 import dsw.tallerbackend.dto.OstResponseDTO;
 import dsw.tallerbackend.model.Auto;
 import dsw.tallerbackend.model.Direccion;
+import dsw.tallerbackend.model.InventarioAuto;
 import dsw.tallerbackend.model.Modelo;
 import dsw.tallerbackend.model.OrdenPregunta;
 import dsw.tallerbackend.model.OrdenPreguntaPK;
@@ -17,6 +19,8 @@ import dsw.tallerbackend.model.TipoEstado;
 import dsw.tallerbackend.model.Usuario;
 import dsw.tallerbackend.reporistory.AutoRepository;
 import dsw.tallerbackend.reporistory.DireccionRepository;
+import dsw.tallerbackend.reporistory.InventarioAutoRepository;
+import dsw.tallerbackend.reporistory.ItemInventarioRepository;
 import dsw.tallerbackend.reporistory.ModeloRepository;
 import dsw.tallerbackend.reporistory.OrdenPreguntaRepository;
 import dsw.tallerbackend.reporistory.OstRepository;
@@ -52,6 +56,12 @@ public class OstService {
     private UsuarioRepository usuarioRepository;
     
     @Autowired private OrdenPreguntaRepository ordenPreguntaRepo;
+    
+    @Autowired
+    private ItemInventarioRepository itemInventarioRepository;
+    
+    @Autowired
+    private InventarioAutoRepository inventarioAutoRepository;
     
     @Autowired private ModeloRepository modeloRepository;
     public List<OstResponseDTO> listOsts(){
@@ -116,15 +126,25 @@ public class OstService {
     if (usuario == null) {
         return new OstResponseDTO(); // Usuario no válido
     }
+    
+    // 7. Buscar usuario (supervisor)
+    Usuario usuario2 = usuarioRepository.findById(ostRequestDTO.getIdSupervisor().longValue()).orElse(null);
+    if (usuario2 == null) {
+        return new OstResponseDTO(); // Usuario no válido
+    }
 
     // 8. Crear OST
     Ost ost = Ost.builder()
         .fecha(ostRequestDTO.getFecha())
+        .fechaRevision(ostRequestDTO.getFechaRevision())
         .hora(ostRequestDTO.getHora())
+        .nivelGasolina(ostRequestDTO.getNivelGasolina())
+        .kilometraje(ostRequestDTO.getKilometraje())
         .direccion(direccion)
         .estado(tipoEstado)
         .auto(auto)
         .recepcionista(usuario)
+        .supervisor(usuario2)
         .build();
 
     ost = ostRepository.save(ost);
@@ -153,15 +173,14 @@ public class OstService {
         Integer idusuario = ostRequestDTO.getIdRecepcionista();
         Usuario usuario = usuarioRepository.findById(idusuario.longValue()).orElse(null);
         if(usuario==null) return new OstResponseDTO();
-        Ost ost = new Ost(
-                ostRequestDTO.getIdOst(),
-                ostRequestDTO.getFecha(),
-                ostRequestDTO.getHora(),
-                direccion,
-                tipoEstado,
-                auto,
-                usuario
-        );
+        Ost ost = Ost.builder()
+            .fecha(ostRequestDTO.getFecha())
+            .hora(ostRequestDTO.getHora())
+            .direccion(direccion)
+            .estado(tipoEstado)
+            .auto(auto)
+            .recepcionista(usuario)
+            .build();
         ost=ostRepository.save(ost);
         return OstResponseDTO.fromEntity(ost);
     }
@@ -194,4 +213,28 @@ public class OstService {
                    .collect(Collectors.toList());
     }
     
+    public void actualizarInventarioYRevision(Integer idOst, InventarioRevisionDTO dto) {
+    Ost ost = ostRepository.findById(idOst)
+        .orElseThrow(() -> new RuntimeException("OST no encontrada"));
+
+    ost.setKilometraje(dto.getKilometraje());
+    ost.setNivelGasolina(dto.getNivelGasolina());
+
+    ostRepository.save(ost);
+
+    // Elimina inventario anterior si lo deseas
+
+    List<InventarioAuto> inventarios = dto.getInventario().stream().map(itemDTO -> {
+        InventarioAuto inv = new InventarioAuto();
+        inv.setOst(ost);
+        inv.setIdItem(itemInventarioRepository.findById(itemDTO.getIdItem())
+                        .orElseThrow(() -> new RuntimeException("Item no encontrado")));
+        inv.setCantidad(itemDTO.getCantidad());
+        inv.setEstado(itemDTO.getEstado());
+        return inv;
+    }).collect(Collectors.toList());
+
+    inventarioAutoRepository.saveAll(inventarios);
+}
+
 }

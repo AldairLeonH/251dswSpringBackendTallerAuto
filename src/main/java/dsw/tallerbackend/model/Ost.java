@@ -32,8 +32,15 @@ public class Ost {
        
     private LocalDate fecha;
     
+    @Column(name="fecha_revision")
+    private LocalDate fechaRevision;
     
     private LocalTime hora;
+    
+    @Column(name="nivel_gasolina")
+    private String nivelGasolina;
+    
+    private Integer kilometraje; 
     
     
     @ManyToOne(fetch = FetchType.EAGER)
@@ -52,6 +59,8 @@ public class Ost {
     @JoinColumn(name = "id_recepcionista", referencedColumnName = "id_usuario")
     private Usuario recepcionista;
     
-    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_supervisor", referencedColumnName = "id_usuario")
+    private Usuario supervisor;
 
 }

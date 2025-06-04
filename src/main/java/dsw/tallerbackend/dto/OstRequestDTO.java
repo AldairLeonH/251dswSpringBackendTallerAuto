@@ -16,8 +16,12 @@ import lombok.NoArgsConstructor;
 public class OstRequestDTO{
     private Integer idOst;
     private LocalDate fecha;
+    private LocalDate fechaRevision;
     private LocalTime hora;
     private Integer idDireccion;
+    
+    private String nivelGasolina;
+    private Integer kilometraje;
     
     private Integer idAuto;
     private Integer anio;
@@ -28,5 +32,7 @@ public class OstRequestDTO{
     
     private Integer idEstado;
     private Integer IdRecepcionista;
+    private Integer IdSupervisor;
     private List<Integer> preguntas;
+    private List<InventarioAutoRequestDTO> inventario;
 }

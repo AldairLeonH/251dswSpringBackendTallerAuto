@@ -4,7 +4,7 @@
  */
 package dsw.tallerbackend.dto;
 
-import java.util.List;
+import dsw.tallerbackend.model.CategoriaItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventarioRevisionDTO {
-    private int idOst;
-    private Integer kilometraje;
-    private String nivelGasolina;
-    //private Boolean autorizacionConduccion;
-    private List<InventarioAutoRequestDTO> inventario;
+public class CategoriaItemDTO {
+    private Long idCategoria;
+    private String nombre;
+    
+    public static CategoriaItemDTO fromEntity(CategoriaItem categoria) {
+        return CategoriaItemDTO.builder()
+               .idCategoria(categoria.getIdCategoria())
+               .nombre(categoria.getNombre())
+               .build();
+    }
 }

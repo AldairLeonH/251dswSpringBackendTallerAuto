@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventarioAutoRequestDTO {
-    private int idOst;
     private Integer idItem;
     private Integer cantidad;
     private String estado;

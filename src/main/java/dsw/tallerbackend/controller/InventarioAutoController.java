@@ -6,6 +6,7 @@ package dsw.tallerbackend.controller;
 
 import dsw.tallerbackend.dto.InventarioAutoRequestDTO;
 import dsw.tallerbackend.dto.InventarioAutoResponseDTO;
+import dsw.tallerbackend.dto.InventarioRevisionDTO;
 import dsw.tallerbackend.service.InventarioAutoService;
 import java.util.List;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class InventarioAutoController {
     private final Logger logger=LoggerFactory.getLogger(this.getClass());
     
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarInventario(@RequestBody List<InventarioAutoRequestDTO> inventario) {
+    public ResponseEntity<?> guardarInventario(@RequestBody InventarioRevisionDTO inventario) {
         inventarioService.guardarInventario(inventario);
         return ResponseEntity.ok().build();
     }

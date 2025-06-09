@@ -227,8 +227,7 @@ public class OstService {
     List<InventarioAuto> inventarios = dto.getInventario().stream().map(itemDTO -> {
         InventarioAuto inv = new InventarioAuto();
         inv.setOst(ost);
-        inv.setIdItem(itemInventarioRepository.findById(itemDTO.getIdItem())
-                        .orElseThrow(() -> new RuntimeException("Item no encontrado")));
+        //inv.setIdItem(itemInventarioRepository.findById(itemDTO.getIdItem()).orElseThrow(() -> new RuntimeException("Item no encontrado")));
         inv.setCantidad(itemDTO.getCantidad());
         inv.setEstado(itemDTO.getEstado());
         return inv;

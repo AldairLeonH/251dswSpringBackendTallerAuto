@@ -34,5 +34,5 @@ public class OstRequestDTO{
     private Integer IdRecepcionista;
     private Integer IdSupervisor;
     private List<Integer> preguntas;
-    private List<InventarioAutoRequestDTO> inventario;
+    //private List<InventarioAutoRequestDTO> inventario;
 }

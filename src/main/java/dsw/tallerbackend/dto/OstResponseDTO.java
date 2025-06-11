@@ -7,6 +7,8 @@ import dsw.tallerbackend.model.Ost;
 import dsw.tallerbackend.model.Persona;
 import dsw.tallerbackend.model.TipoEstado;
 import dsw.tallerbackend.model.Usuario;
+import dsw.tallerbackend.reporistory.OrdenPreguntaRepository;
+import dsw.tallerbackend.reporistory.OstRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -56,6 +59,8 @@ public class OstResponseDTO {
     // Recepcionista
     private String recepcionista;
     private String supervisor;
+    
+    private List<String> preguntasOst;
     
     public static OstResponseDTO fromEntity(Ost ost) {
         Auto auto = ost.getAuto();
@@ -102,14 +107,12 @@ public class OstResponseDTO {
             .build();
     }
 
-     public static List<OstResponseDTO> fromEntities(List<Ost> osts) {
+    public static List<OstResponseDTO> fromEntities(List<Ost> osts) {
          return osts.stream()
                  .map(OstResponseDTO::fromEntity)
                  .collect(Collectors.toList());
          
      }    
+   
 
-     
-     
-    
 }

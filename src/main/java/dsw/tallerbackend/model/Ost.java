@@ -62,5 +62,5 @@ public class Ost {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_supervisor", referencedColumnName = "id_usuario")
     private Usuario supervisor;
-
+    
 }

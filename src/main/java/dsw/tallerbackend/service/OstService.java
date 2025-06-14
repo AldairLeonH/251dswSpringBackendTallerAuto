@@ -15,6 +15,7 @@ import dsw.tallerbackend.model.OrdenPregunta;
 import dsw.tallerbackend.model.OrdenPreguntaPK;
 import dsw.tallerbackend.model.Ost;
 import dsw.tallerbackend.model.Persona;
+import dsw.tallerbackend.model.Pregunta;
 import dsw.tallerbackend.model.TipoEstado;
 import dsw.tallerbackend.model.Usuario;
 import dsw.tallerbackend.reporistory.AutoRepository;
@@ -25,6 +26,7 @@ import dsw.tallerbackend.reporistory.ModeloRepository;
 import dsw.tallerbackend.reporistory.OrdenPreguntaRepository;
 import dsw.tallerbackend.reporistory.OstRepository;
 import dsw.tallerbackend.reporistory.PersonaRepository;
+import dsw.tallerbackend.reporistory.PreguntaRepository;
 import dsw.tallerbackend.reporistory.TipoEstadoRepository;
 import dsw.tallerbackend.reporistory.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -54,6 +56,9 @@ public class OstService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
+    
+    @Autowired
+    private PreguntaRepository preguntaRepository;
     
     @Autowired private OrdenPreguntaRepository ordenPreguntaRepo;
     
@@ -149,9 +154,17 @@ public class OstService {
 
     ost = ostRepository.save(ost);
         for (Integer idPregunta : ostRequestDTO.getPreguntas()) {
+            Optional<Pregunta> preguntaOst = preguntaRepository.findById(idPregunta);
+            if (!preguntaOst.isPresent()) {
+                return new OstResponseDTO(); // Estado inválido
+            }
+            Pregunta pregunta = preguntaOst.get();
+
             ordenPreguntaRepo.save(
                 OrdenPregunta.builder()
                     .id(new OrdenPreguntaPK(ost.getIdOst(), idPregunta))
+                    .ost(ost)
+                    .pregunta(pregunta)
                     .build()
             );
         }
@@ -218,6 +231,8 @@ public class OstService {
         .orElseThrow(() -> new RuntimeException("OST no encontrada"));
 
     ost.setKilometraje(dto.getKilometraje());
+        System.out.println(dto.getKilometraje());
+        System.out.println(dto.getNivelGasolina());
     ost.setNivelGasolina(dto.getNivelGasolina());
 
     ostRepository.save(ost);

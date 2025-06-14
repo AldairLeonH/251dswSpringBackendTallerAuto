@@ -6,7 +6,6 @@ package dsw.tallerbackend.controller;
 
 import dsw.tallerbackend.model.Pregunta;
 import dsw.tallerbackend.reporistory.OrdenPreguntaRepository;
-import dsw.tallerbackend.reporistory.OstRepository;
 import dsw.tallerbackend.reporistory.PreguntaRepository;
 import java.util.List;
 import java.util.stream.Collectors;

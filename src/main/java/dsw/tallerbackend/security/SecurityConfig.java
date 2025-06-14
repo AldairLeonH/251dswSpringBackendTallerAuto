@@ -32,10 +32,10 @@ public class SecurityConfig {
             .authorizeHttpRequests()
             // .requestMatchers("/api/auth/**").permitAll()
             // .anyRequest().authenticated()
-            .anyRequest().permitAll()
+                .anyRequest().permitAll()
             .and()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         

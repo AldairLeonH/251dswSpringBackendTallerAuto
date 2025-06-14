@@ -23,6 +23,6 @@ import lombok.NoArgsConstructor;
 public class Pregunta {
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY )
-    private Long id;
+    private Integer id;
     private String pregunta;
 }

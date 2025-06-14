@@ -1,0 +1,21 @@
+package dsw.tallerbackend.reporistory;
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+
+/**
+ *
+ * @author Ciro
+ */
+import dsw.tallerbackend.model.CotizacionServicio;
+import dsw.tallerbackend.model.CotizacionServicioId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CotizacionServicioRepository extends JpaRepository<CotizacionServicio, CotizacionServicioId> {
+    
+    
+}

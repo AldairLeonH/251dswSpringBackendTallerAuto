@@ -6,7 +6,6 @@ package dsw.tallerbackend.service;
 
 import org.springframework.stereotype.Service;
 
-
 import dsw.tallerbackend.dto.AgregarMaterialRequest;
 import dsw.tallerbackend.dto.AgregarMultiplesMaterialesRequest;
 import dsw.tallerbackend.dto.CotizacionMaterialResponse;
@@ -17,12 +16,10 @@ import dsw.tallerbackend.reporistory.*;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import static org.hibernate.internal.CoreLogging.logger;
-import static org.hibernate.internal.HEMLogging.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 /**
  *
  * @author Ciro
@@ -37,7 +34,7 @@ public class CotizacionMaterialService {
 
     @Autowired
     private CotizacionMaterialRepository cotizacionMaterialRepo;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(CotizacionMaterialService.class);
 
     public CotizacionMaterialResponse agregarMaterialACotizacion(AgregarMaterialRequest request) {
@@ -63,7 +60,8 @@ public class CotizacionMaterialService {
         cotizacionMaterialRepo.save(cotizacionMaterial);
 
         return CotizacionMaterialResponse.fromEntity(material);
-    } 
+    }
+
     @Transactional
     public CotizacionMultiplesMaterialesResponse agregarMultiplesMaterialesACotizacion(
             AgregarMultiplesMaterialesRequest request) {
@@ -80,7 +78,7 @@ public class CotizacionMaterialService {
                         .orElseThrow(() -> new RuntimeException("Material no encontrado"));
 
                 CotizacionMaterialId id = new CotizacionMaterialId(
-                        request.getIdCotizacion(), 
+                        request.getIdCotizacion(),
                         materialReq.getIdMaterial());
 
                 if (!cotizacionMaterialRepo.existsById(id)) {
@@ -109,5 +107,5 @@ public class CotizacionMaterialService {
                 .idCotizacion(request.getIdCotizacion())
                 .materialesAgregados(materialesAgregados)
                 .build();
-    }    
+    }
 }

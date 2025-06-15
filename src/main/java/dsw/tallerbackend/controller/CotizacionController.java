@@ -32,19 +32,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/v1/cotizaciones")
 public class CotizacionController {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private CotizacionServicioService cotizacionServicioService;
+
     @Autowired
     private CotizacionMaterialService cotizacionMaterialService;
+
     @Autowired
     private CotizacionService cotizacionService;
-    
-    
+
     @GetMapping
     public ResponseEntity<?> getCotizaciones() {
         List<CotizacionResponse> listaCotizaciones = null;
@@ -61,6 +63,7 @@ public class CotizacionController {
         }
         return ResponseEntity.ok(listaCotizaciones);
     }
+
     @PostMapping
     public ResponseEntity<?> insertCotizacion(@RequestBody CotizacionRequest request) {
         logger.info("> insertCotizacion: " + request.toString());
@@ -78,21 +81,22 @@ public class CotizacionController {
         }
 
         return ResponseEntity.ok(response);
-    }    
+    }
 
     @PostMapping("/agregar-servicio")
     public CotizacionServicioResponse agregarServicio(@RequestBody AgregarServicioRequest request) {
         return cotizacionServicioService.agregarServicioACotizacion(request);
     }
+
     @PostMapping("/agregar-material")
     public CotizacionMaterialResponse agregarMaterial(@RequestBody AgregarMaterialRequest request) {
         return cotizacionMaterialService.agregarMaterialACotizacion(request);
-    }    
+    }
+
     @PostMapping("/agregar-servicios")
     public ResponseEntity<?> agregarMultiplesServicios(@RequestBody AgregarMultiplesServiciosRequest request) {
         logger.info("> agregarMultiplesServicios: " + request.toString());
 
-        // Validación para lista nula o vacía - devuelve respuesta exitosa sin agregar nada
         if (request.getIdServicios() == null || request.getIdServicios().isEmpty()) {
             return ResponseEntity.ok(CotizacionMultiplesServiciosResponse.builder()
                     .idCotizacion(request.getIdCotizacion())
@@ -111,13 +115,13 @@ public class CotizacionController {
                             .build());
         }
     }
+
     @PostMapping("/agregar-materiales")
     public ResponseEntity<?> agregarMultiplesMateriales(
             @RequestBody AgregarMultiplesMaterialesRequest request) {
 
         logger.info("Solicitud para agregar materiales a cotización: {}", request.getIdCotizacion());
 
-        // Validación para lista vacía o nula
         if (request.getMateriales() == null || request.getMateriales().isEmpty()) {
             return ResponseEntity.ok(CotizacionMultiplesMaterialesResponse.builder()
                     .idCotizacion(request.getIdCotizacion())
@@ -126,7 +130,7 @@ public class CotizacionController {
         }
 
         try {
-            CotizacionMultiplesMaterialesResponse response = 
+            CotizacionMultiplesMaterialesResponse response =
                     cotizacionMaterialService.agregarMultiplesMaterialesACotizacion(request);
             return ResponseEntity.ok(response);
 
@@ -138,7 +142,7 @@ public class CotizacionController {
                             .build());
         }
     }
-    
+
     @PostMapping("/actualizar-total")
     public ResponseEntity<?> actualizarTotalCotizacion(@RequestBody ActualizarTotalCotizacionRequest request) {
         logger.info("Actualizando total para cotización ID: {}", request.getIdCotizacion());
@@ -148,7 +152,6 @@ public class CotizacionController {
                     request.getIdCotizacion(), request.getNuevoTotal()
             );
 
-            // Solo mensaje de confirmación
             return ResponseEntity.ok(Map.of("mensaje", "Total actualizado correctamente"));
         } catch (Exception e) {
             logger.error("Error al actualizar el total de la cotización", e);
@@ -156,6 +159,4 @@ public class CotizacionController {
                     .body(Map.of("mensaje", "Error al actualizar el total: " + e.getMessage()));
         }
     }
-
-
 }

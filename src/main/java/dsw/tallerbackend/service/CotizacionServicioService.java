@@ -22,8 +22,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 @Service
 public class CotizacionServicioService {
+
     @Autowired
     private CotizacionRepository cotizacionRepo;
 
@@ -32,7 +34,7 @@ public class CotizacionServicioService {
 
     @Autowired
     private CotizacionServicioRepository cotizacionServicioRepo;
-    
+
     public CotizacionServicioResponse agregarServicioACotizacion(AgregarServicioRequest request) {
         Cotizacion cotizacion = cotizacionRepo.findById(request.getIdCotizacion())
                 .orElseThrow(() -> new RuntimeException("Cotización no encontrada"));
@@ -42,7 +44,6 @@ public class CotizacionServicioService {
 
         CotizacionServicioId id = new CotizacionServicioId(request.getIdCotizacion(), request.getIdServicio());
 
-        // Verificar si ya existe la relación
         if (cotizacionServicioRepo.existsById(id)) {
             throw new RuntimeException("El servicio ya está agregado a esta cotización.");
         }
@@ -53,11 +54,12 @@ public class CotizacionServicioService {
                 .servicio(servicio)
                 .build();
 
-        cotizacionServicioRepo.save(cotizacionServicio); // Guardar en la BD
+        cotizacionServicioRepo.save(cotizacionServicio);
 
         return CotizacionServicioResponse.fromEntity(servicio);
     }
-//método para agregar múltiples servicios
+
+    // Método para agregar múltiples servicios
     @Transactional
     public CotizacionMultiplesServiciosResponse agregarMultiplesServiciosACotizacion(AgregarMultiplesServiciosRequest request) {
         Cotizacion cotizacion = cotizacionRepo.findById(request.getIdCotizacion())
@@ -93,5 +95,5 @@ public class CotizacionServicioService {
                 .idCotizacion(request.getIdCotizacion())
                 .serviciosAgregados(serviciosAgregados)
                 .build();
-    }    
+    }
 }

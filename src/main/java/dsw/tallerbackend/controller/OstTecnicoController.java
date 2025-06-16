@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/ost-tecnico")
+@RequestMapping("/api/v1/ost-tecnico")
 public class OstTecnicoController {
 
     @Autowired private OstTecnicoService service;
 
     @PostMapping("/asignar")
     public ResponseEntity<?> asignarTecnico(@RequestBody OstTecnicoRequestDTO dto) {
+        System.out.println("fafafafa");
         service.asignarMultiplesTecnicos(dto);
         return ResponseEntity.ok().build();
     }
@@ -37,7 +38,7 @@ public class OstTecnicoController {
     @DeleteMapping("/{idOst}/{idTecnico}")
     public ResponseEntity<?> eliminarAsignacion(@PathVariable Integer idOst, @PathVariable Long idTecnico) {
         service.eliminarAsignacion(idOst, idTecnico);
-        return ResponseEntity.ok("Asignación eliminada");
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/finalizar/{idOst}/{idTecnico}")

@@ -1,17 +1,23 @@
 
 package dsw.tallerbackend.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Embeddable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class OstTecnicoId implements Serializable {
-    private Long idOst;
+    @Column(name = "id_ost") 
+    private Integer idOst;
+    
+    @Column(name = "id_tecnico") 
     private Long idTecnico;
     
         @Override

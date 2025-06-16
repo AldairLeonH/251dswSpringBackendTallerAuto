@@ -2,6 +2,7 @@
 package dsw.tallerbackend.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -21,16 +22,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(OstTecnicoId.class)
 public class OstTecnico {
-
-    @Id
-    @Column(name = "id_ost")
-    private Integer idOst;
-
-    @Id
-    @Column(name = "id_tecnico")
-    private Long idTecnico;
+    
+    @EmbeddedId
+    private OstTecnicoId id;//
 
     @ManyToOne
     @JoinColumn(name = "id_ost", insertable = false, updatable = false)

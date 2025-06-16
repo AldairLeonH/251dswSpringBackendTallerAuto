@@ -11,7 +11,9 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OstTecnicoRepository extends JpaRepository<OstTecnico, OstTecnicoId> {
-    List<OstTecnico> findByIdOst(Integer idOst);
-    List<OstTecnico> findByIdTecnico(Long idTecnico);
-    Optional<OstTecnico> findByIdOstAndIdTecnico(Integer idOst, Long idTecnico);
+    Optional<OstTecnico> findById_IdOstAndId_IdTecnico(Integer idOst, Long idTecnico);
+
+    List<OstTecnico> findById_IdOst(Integer idOst);
+
+    List<OstTecnico> findById_IdTecnico(Long idTecnico);
 }

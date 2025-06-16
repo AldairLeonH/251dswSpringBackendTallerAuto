@@ -27,7 +27,7 @@ public class AutoService {
         
     public List<AutoResponse> findByPersona(Integer idPersona) {
         List<Auto> autos = autoRepository.findByPersona_IdPersona(idPersona);
-        System.out.println(Arrays.toString(autos.toArray()));
+        //System.out.println(Arrays.toString(autos.toArray()));
         return autos.stream()
                  .map(auto -> AutoResponse.builder()
                         .idAuto(auto.getIdAuto())

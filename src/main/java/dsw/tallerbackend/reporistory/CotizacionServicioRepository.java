@@ -11,11 +11,14 @@ package dsw.tallerbackend.reporistory;
  */
 import dsw.tallerbackend.model.CotizacionServicio;
 import dsw.tallerbackend.model.CotizacionServicioId;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CotizacionServicioRepository extends JpaRepository<CotizacionServicio, CotizacionServicioId> {
+    List<CotizacionServicio> findByCotizacionId(Long cotizacionId);
+
     
     
 }

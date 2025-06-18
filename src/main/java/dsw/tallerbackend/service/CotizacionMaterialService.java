@@ -10,6 +10,7 @@ import dsw.tallerbackend.dto.AgregarMaterialRequest;
 import dsw.tallerbackend.dto.AgregarMultiplesMaterialesRequest;
 import dsw.tallerbackend.dto.CotizacionMaterialResponse;
 import dsw.tallerbackend.dto.CotizacionMultiplesMaterialesResponse;
+import dsw.tallerbackend.dto.MaterialConCantidadResponse;
 import dsw.tallerbackend.dto.MaterialCotizacionRequest;
 import dsw.tallerbackend.model.*;
 import dsw.tallerbackend.reporistory.*;
@@ -108,4 +109,12 @@ public class CotizacionMaterialService {
                 .materialesAgregados(materialesAgregados)
                 .build();
     }
+    public List<MaterialConCantidadResponse> obtenerMaterialesDeCotizacion(Long idCotizacion) {
+        List<CotizacionMaterial> materiales = cotizacionMaterialRepo.findByCotizacionId(idCotizacion);
+
+        return materiales.stream()
+                .map(cm -> MaterialConCantidadResponse.fromEntity(cm.getMaterial(), cm.getCantidad()))
+                .toList();
+    }
+    
 }

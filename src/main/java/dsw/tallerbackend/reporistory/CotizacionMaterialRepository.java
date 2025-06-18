@@ -10,9 +10,12 @@ package dsw.tallerbackend.reporistory;
  */
 import dsw.tallerbackend.model.CotizacionMaterial;
 import dsw.tallerbackend.model.CotizacionMaterialId;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CotizacionMaterialRepository extends JpaRepository<CotizacionMaterial, CotizacionMaterialId> {
+    List<CotizacionMaterial> findByCotizacionId(Long cotizacionId);
+
     
 }

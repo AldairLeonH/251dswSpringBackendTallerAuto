@@ -15,6 +15,7 @@ import dsw.tallerbackend.dto.CotizacionMultiplesServiciosResponse;
 import dsw.tallerbackend.dto.CotizacionRequest;
 import dsw.tallerbackend.dto.CotizacionResponse;
 import dsw.tallerbackend.dto.CotizacionServicioResponse;
+import dsw.tallerbackend.dto.MaterialConCantidadResponse;
 import dsw.tallerbackend.service.CotizacionMaterialService;
 import dsw.tallerbackend.service.CotizacionService;
 import dsw.tallerbackend.service.CotizacionServicioService;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -159,4 +161,28 @@ public class CotizacionController {
                     .body(Map.of("mensaje", "Error al actualizar el total: " + e.getMessage()));
         }
     }
+    @GetMapping("/{idCotizacion}/servicios")
+    public ResponseEntity<?> listarServiciosPorCotizacion(@PathVariable Long idCotizacion) {
+        try {
+            List<CotizacionServicioResponse> servicios = cotizacionServicioService.listarServiciosPorCotizacion(idCotizacion);
+
+            if (servicios.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(ErrorResponse.builder().message("No se encontraron servicios para la cotización").build());
+            }
+
+            return ResponseEntity.ok(servicios);
+        } catch (Exception e) {
+            logger.error("Error al listar servicios de la cotización", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ErrorResponse.builder().message("Error interno: " + e.getMessage()).build());
+        }
+        
+    }
+    @GetMapping("/{id}/materiales")
+    public ResponseEntity<List<MaterialConCantidadResponse>> obtenerMaterialesPorCotizacion(
+            @PathVariable("id") Long idCotizacion) {
+        List<MaterialConCantidadResponse> materiales = cotizacionMaterialService.obtenerMaterialesDeCotizacion(idCotizacion);
+        return ResponseEntity.ok(materiales);
+    }   
 }

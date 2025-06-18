@@ -96,4 +96,11 @@ public class CotizacionServicioService {
                 .serviciosAgregados(serviciosAgregados)
                 .build();
     }
+public List<CotizacionServicioResponse> listarServiciosPorCotizacion(Long idCotizacion) {
+    List<CotizacionServicio> asociaciones = cotizacionServicioRepo.findByCotizacionId(idCotizacion);
+
+    return asociaciones.stream()
+            .map(cs -> CotizacionServicioResponse.fromEntity(cs.getServicio()))
+            .collect(Collectors.toList());
+}    
 }

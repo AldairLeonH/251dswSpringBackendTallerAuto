@@ -55,6 +55,13 @@ public class OstController {
         List<OstResponseDTO> lista = ostService.obtenerOstPorCliente(idUsuario);
         return ResponseEntity.ok(lista);
     }
+    
+    @GetMapping("/supervisor/{idSupervisor}")
+    public ResponseEntity<?> obtenerPorSupervisor(@PathVariable Long idSupervisor) {
+        List<OstResponseDTO> lista = ostService.obtenerOstPorSupervisor(idSupervisor);
+        return ResponseEntity.ok(lista);
+    }
+    
     @PostMapping
     public ResponseEntity<?> insertOst(@RequestBody OstRequestDTO ostRequestDTO){
         logger.info(">insert"+ostRequestDTO.toString());

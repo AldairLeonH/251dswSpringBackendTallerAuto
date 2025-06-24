@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OstRepository extends JpaRepository<Ost, Integer> {
-
+    public List<Ost> findBySupervisorId(Long idSupervisor);
     public List<Ost> findByRecepcionistaId(Long idCliente);
     @Query("SELECT o FROM Ost o WHERE o.auto.persona.id = :idPersona")
     public List<Ost> findByIdPersonaCliente(Integer idPersona);

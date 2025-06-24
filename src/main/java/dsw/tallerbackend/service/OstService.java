@@ -72,6 +72,7 @@ public class OstService {
     public List<OstResponseDTO> listOsts(){
         return OstResponseDTO.fromEntities(ostRepository.findAll());
     }
+    
     public OstResponseDTO insertOst(OstRequestDTO ostRequestDTO) {
     // 1. Buscar tipoEstado de forma segura
     Optional<TipoEstado> tipoEstadoOpt = tipoEstadoRepository.findById(ostRequestDTO.getIdEstado());
@@ -170,6 +171,7 @@ public class OstService {
         }
         return OstResponseDTO.fromEntity(ost);
     }
+    
     public OstResponseDTO updateOst(OstRequestDTO ostRequestDTO){
         Integer idTipoEstado = ostRequestDTO.getIdEstado();
         TipoEstado tipoEstado = tipoEstadoRepository.findById(idTipoEstado).get();
@@ -197,6 +199,7 @@ public class OstService {
         ost=ostRepository.save(ost);
         return OstResponseDTO.fromEntity(ost);
     }
+    
     @Transactional
     public void deleteOst(int id) {
         if (!ostRepository.existsById(id)) {
@@ -209,6 +212,7 @@ public class OstService {
         // Luego eliminar la OST
         ostRepository.deleteById(id);
     }
+    
     public OstResponseDTO findOst(Integer id){
         Optional<Ost> result=ostRepository.findById(id);
         if(!result.isPresent())
@@ -221,6 +225,13 @@ public class OstService {
         Integer idPersona = usuario.getPersona().getIdPersona(); // asegúrate que no sea null
         List<Ost> osts = ostRepository.findByIdPersonaCliente(idPersona);
 
+        return osts.stream()
+                   .map(OstResponseDTO::fromEntity)
+                   .collect(Collectors.toList());
+    }
+    
+    public List<OstResponseDTO> obtenerOstPorSupervisor(Long idSupervisor) {
+        List<Ost> osts = ostRepository.findBySupervisorId(idSupervisor);
         return osts.stream()
                    .map(OstResponseDTO::fromEntity)
                    .collect(Collectors.toList());

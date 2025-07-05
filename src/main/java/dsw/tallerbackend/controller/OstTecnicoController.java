@@ -1,6 +1,6 @@
-
 package dsw.tallerbackend.controller;
 
+import dsw.tallerbackend.dto.OstTecnicoCompletoDTO;
 import dsw.tallerbackend.dto.OstTecnicoRequestDTO;
 import dsw.tallerbackend.dto.OstTecnicoResponseDTO;
 import dsw.tallerbackend.service.OstTecnicoService;
@@ -53,7 +53,7 @@ public class OstTecnicoController {
     }
     
     @GetMapping("/por-tecnico/{idTecnico}")
-    public ResponseEntity<List<OstTecnicoResponseDTO>> obtenerPorTecnico(@PathVariable Long idTecnico) {
+    public ResponseEntity<List<OstTecnicoCompletoDTO>> obtenerPorTecnico(@PathVariable Long idTecnico) {
         return ResponseEntity.ok(service.obtenerOstsPorTecnico(idTecnico));
     }
 }

@@ -1,6 +1,8 @@
 package dsw.tallerbackend.service;
 
 import dsw.tallerbackend.dto.AsignacionTecnicoDTO;
+import dsw.tallerbackend.dto.OstResponseDTO;
+import dsw.tallerbackend.dto.OstTecnicoCompletoDTO;
 import dsw.tallerbackend.dto.OstTecnicoRequestDTO;
 import dsw.tallerbackend.dto.OstTecnicoResponseDTO;
 import dsw.tallerbackend.model.Ost;
@@ -27,7 +29,6 @@ public class OstTecnicoService {
     @Autowired private OstRepository ostRepository;
 
     public void asignarMultiplesTecnicos(OstTecnicoRequestDTO dto) {
-        System.out.println("sisisi");
     Ost ost = ostRepository.findById(dto.getIdOst())
         .orElseThrow(() -> new RuntimeException("OST no encontrada"));
     for (AsignacionTecnicoDTO asignacion : dto.getAsignaciones()) {
@@ -47,7 +48,6 @@ public class OstTecnicoService {
         ostTecnicoRepository.save(ostTecnico);
     }
 }
-    
     
     // Marcar como finalizada una asignación
     public void finalizarTrabajo(Integer idOst, Long idTecnico, String observaciones) {
@@ -81,17 +81,20 @@ public class OstTecnicoService {
     
 
     // Obtener todas las OST asignadas a un técnico
-    public List<OstTecnicoResponseDTO> obtenerOstsPorTecnico(Long idTecnico) {
+    public List<OstTecnicoCompletoDTO> obtenerOstsPorTecnico(Long idTecnico) {
         return ostTecnicoRepository.findById_IdTecnico(idTecnico).stream()
-            .map(rel -> OstTecnicoResponseDTO.builder()
-                .idOst(rel.getId().getIdOst())
-                .idTecnico(rel.getId().getIdTecnico())
-                .estado(rel.getEstado().getEstado())
+            .map(rel -> {
+                Ost ost = rel.getOrdenServicio(); // o rel.getOst() si tienes la relación con fetch
+                OstResponseDTO ostDto = OstResponseDTO.fromEntity(ost); // tu método de mapeo
+                return 
+                OstTecnicoCompletoDTO.builder()
+                .ost(ostDto)
+                .estadoAsignacion(rel.getEstado().getEstado())
                 .fechaAsignacion(rel.getFechaAsignacion())
                 .fechaFinalizacion(rel.getFechaFinalizacion())
                 .observaciones(rel.getObservaciones())
-                .build())
-            .collect(Collectors.toList());
+                .build();
+            }).collect(Collectors.toList());
     }
 
 }
